@@ -14,7 +14,10 @@ def list_consultations():
 
 @consultations_bp.route('/<int:consultation_id>', methods=['GET'])
 def view_consultation(consultation_id):
-    consultation = Consultation.query.get_or_404(consultation_id)
+    consultation = Consultation.query.options(
+        db.joinedload(Consultation.patient),
+        db.joinedload(Consultation.invoice)
+    ).get_or_404(consultation_id)
     return render_template('consultations/view.html', consultation=consultation)
 
 @consultations_bp.route('/new', methods=['GET'])
