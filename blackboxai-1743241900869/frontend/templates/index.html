@@ -9,7 +9,7 @@
         <div class="card bg-base-100 shadow">
             <div class="card-body">
                 <h2 class="card-title text-primary">Patients</h2>
-                <p class="text-4xl font-bold">0</p>
+                <p class="text-4xl font-bold">{{ patients_count }}</p>
                 <div class="card-actions justify-end">
                     <a href="/patients" class="btn btn-primary btn-sm">Voir tous</a>
                 </div>
@@ -20,7 +20,7 @@
         <div class="card bg-base-100 shadow">
             <div class="card-body">
                 <h2 class="card-title text-secondary">Consultations</h2>
-                <p class="text-4xl font-bold">0</p>
+                <p class="text-4xl font-bold">{{ consultations_count }}</p>
                 <div class="card-actions justify-end">
                     <a href="/consultations" class="btn btn-secondary btn-sm">Voir toutes</a>
                 </div>
@@ -39,11 +39,42 @@
         </div>
     </div>
     
-    <div class="grid grid-cols-1 gap-6">
-        <!-- Dernières consultations -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Derniers patients -->
         <div class="card bg-base-100 shadow">
             <div class="card-body">
-                <h2 class="card-title">Dernières consultations</h2>
+                <h2 class="card-title">Derniers patients</h2>
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patient in recent_patients %}
+                            <tr>
+                                <td>{{ patient.last_name }} {{ patient.first_name }}</td>
+                                <td>{{ patient.email }}</td>
+                                <td>{{ patient.phone }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucun patient récent</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Prochaines consultations -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <h2 class="card-title">Prochaines consultations</h2>
                 <div class="overflow-x-auto">
                     <table class="table table-zebra">
                         <thead>
@@ -51,13 +82,20 @@
                                 <th>Patient</th>
                                 <th>Date</th>
                                 <th>Motif</th>
-                                <th>Montant</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for consultation in upcoming_consultations %}
                             <tr>
-                                <td colspan="4" class="text-center">Aucune consultation récente</td>
+                                <td>{{ consultation.patient.last_name }}</td>
+                                <td>{{ consultation.date.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>{{ consultation.reason }}</td>
                             </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center">Aucune consultation à venir</td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
