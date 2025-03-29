@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Tableau de bord</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Card Patients -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <h2 class="card-title text-primary">Patients</h2>
+                <p class="text-4xl font-bold">0</p>
+                <div class="card-actions justify-end">
+                    <a href="/patients" class="btn btn-primary btn-sm">Voir tous</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card Consultations -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <h2 class="card-title text-secondary">Consultations</h2>
+                <p class="text-4xl font-bold">0</p>
+                <div class="card-actions justify-end">
+                    <a href="/consultations" class="btn btn-secondary btn-sm">Voir toutes</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Card Factures -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <h2 class="card-title text-accent">Factures</h2>
+                <p class="text-4xl font-bold">0</p>
+                <div class="card-actions justify-end">
+                    <a href="/invoices" class="btn btn-accent btn-sm">Voir toutes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 gap-6">
+        <!-- Dernières consultations -->
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
+                <h2 class="card-title">Dernières consultations</h2>
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Motif</th>
+                                <th>Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="text-center">Aucune consultation récente</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
