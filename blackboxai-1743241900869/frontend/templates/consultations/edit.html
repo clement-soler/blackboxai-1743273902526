@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Modifier Consultation</h1>
+    {% if error %}
+    <div class="alert alert-error mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>Erreur : {{ error }}</span>
+    </div>
+    {% endif %}
+    
+    <form method="POST" class="card bg-base-100 shadow">
+        <div class="card-body">
+            <div class="form-control">
+                <label class="label" for="patient_id">
+                    <span class="label-text">Patient</span>
+                </label>
+                <select class="select select-bordered" name="patient_id" required>
+                    {% for patient in patients %}
+                    <option value="{{ patient.id }}" {% if patient.id == consultation.patient_id %}selected{% endif %}>
+                        {{ patient.last_name }} {{ patient.first_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="date">
+                    <span class="label-text">Date et Heure</span>
+                </label>
+                <input type="datetime-local" class="input input-bordered" 
+                       name="date" 
+                       value="{{ consultation.date.strftime('%Y-%m-%dT%H:%M') }}"
+                       required>
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="reason">
+                    <span class="label-text">Motif</span>
+                </label>
+                <input type="text" class="input input-bordered" 
+                       name="reason" value="{{ consultation.reason }}" required>
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="price">
+                    <span class="label-text">Prix (€)</span>
+                </label>
+                <input type="number" step="0.01" class="input input-bordered"
+                       name="price" value="{{ consultation.price }}" required>
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="notes">
+                    <span class="label-text">Notes</span>
+                </label>
+                <textarea class="textarea textarea-bordered" name="notes">{{ consultation.notes }}</textarea>
+            </div>
+
+            <div class="card-actions justify-end mt-6">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-2"></i>Enregistrer
+                </button>
+                <a href="/consultations/{{ consultation.id }}" class="btn btn-ghost">
+                    <i class="fas fa-times mr-2"></i>Annuler
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
