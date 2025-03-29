@@ -2,32 +2,35 @@
 
 {% block content %}
 <div class="max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">
-        {% if patient %}Modifier{% else %}Nouveau{% endif %} patient
+    <h1 class="text-2xl font-bold mb-6">
+        {% if patient %}Modifier{% else %}Nouveau{% endif %} Patient
     </h1>
-
-    <div class="card bg-base-100 shadow">
-        <div class="card-body">
-            <form method="POST" action="{% if patient %}/patients/{{ patient.id }}{% else %}/patients{% endif %}">
+    
+    <form method="POST" action="{% if patient %}/patients/{{ patient.id }}{% else %}/patients{% endif %}">
+        {% if patient %}
+        <input type="hidden" name="_method" value="PUT">
+        {% endif %}
+        <div class="card bg-base-100 shadow">
+            <div class="card-body">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Nom -->
                     <div class="form-control">
                         <label class="label" for="last_name">
-                            <span class="label-text">Nom*</span>
+                            <span class="label-text">Nom</span>
                         </label>
                         <input type="text" id="last_name" name="last_name" 
-                               class="input input-bordered" required
-                               value="{{ patient.last_name if patient }}">
+                               value="{{ patient.last_name if patient else '' }}"
+                               class="input input-bordered" required>
                     </div>
 
                     <!-- Prénom -->
                     <div class="form-control">
                         <label class="label" for="first_name">
-                            <span class="label-text">Prénom*</span>
+                            <span class="label-text">Prénom</span>
                         </label>
-                        <input type="text" id="first_name" name="first_name" 
-                               class="input input-bordered" required
-                               value="{{ patient.first_name if patient }}">
+                        <input type="text" id="first_name" name="first_name"
+                               value="{{ patient.first_name if patient else '' }}"
+                               class="input input-bordered" required>
                     </div>
 
                     <!-- Date de naissance -->
@@ -35,9 +38,9 @@
                         <label class="label" for="birth_date">
                             <span class="label-text">Date de naissance</span>
                         </label>
-                        <input type="date" id="birth_date" name="birth_date" 
-                               class="input input-bordered"
-                               value="{{ patient.birth_date.strftime('%Y-%m-%d') if patient and patient.birth_date }}">
+                        <input type="date" id="birth_date" name="birth_date"
+                               value="{{ patient.birth_date.strftime('%Y-%m-%d') if patient and patient.birth_date else '' }}"
+                               class="input input-bordered">
                     </div>
 
                     <!-- Téléphone -->
@@ -45,9 +48,9 @@
                         <label class="label" for="phone">
                             <span class="label-text">Téléphone</span>
                         </label>
-                        <input type="tel" id="phone" name="phone" 
-                               class="input input-bordered"
-                               value="{{ patient.phone if patient }}">
+                        <input type="tel" id="phone" name="phone"
+                               value="{{ patient.phone if patient else '' }}"
+                               class="input input-bordered">
                     </div>
 
                     <!-- Email -->
@@ -55,9 +58,9 @@
                         <label class="label" for="email">
                             <span class="label-text">Email</span>
                         </label>
-                        <input type="email" id="email" name="email" 
-                               class="input input-bordered"
-                               value="{{ patient.email if patient }}">
+                        <input type="email" id="email" name="email"
+                               value="{{ patient.email if patient else '' }}"
+                               class="input input-bordered">
                     </div>
 
                     <!-- Adresse -->
@@ -65,19 +68,18 @@
                         <label class="label" for="address">
                             <span class="label-text">Adresse</span>
                         </label>
-                        <textarea id="address" name="address" 
-                                  class="textarea textarea-bordered h-24">{{ patient.address if patient }}</textarea>
+                        <textarea id="address" name="address" class="textarea textarea-bordered h-24">{{ patient.address if patient else '' }}</textarea>
                     </div>
                 </div>
 
-                <div class="flex justify-end gap-2 mt-6">
+                <div class="mt-6 flex justify-end gap-2">
                     <a href="/patients" class="btn btn-ghost">Annuler</a>
                     <button type="submit" class="btn btn-primary">
                         {% if patient %}Mettre à jour{% else %}Enregistrer{% endif %}
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 {% endblock %}
