@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Créer une Facture</h1>
+    
+    <form method="POST" class="card bg-base-100 shadow">
+        <div class="card-body">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Consultation</span>
+                </label>
+                <input type="text" class="input input-bordered" 
+                       value="{{ consultation.date.strftime('%d/%m/%Y') }} - {{ consultation.patient.last_name }} {{ consultation.patient.first_name }}"
+                       disabled>
+            </div>
+
+            <div class="form-control mt-4">
+                <label class="label">
+                    <span class="label-text">Type de paiement</span>
+                </label>
+                <select name="payment_type" class="select select-bordered" required>
+                    <option value="CB">Carte Bancaire</option>
+                    <option value="Cheque">Chèque</option>
+                    <option value="Especes">Espèces</option>
+                    <option value="Other">Autre</option>
+                </select>
+            </div>
+
+            <div class="card-actions justify-end mt-6">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-file-invoice mr-2"></i>Créer Facture
+                </button>
+                <a href="/consultations/{{ consultation.id }}" class="btn btn-ghost">
+                    <i class="fas fa-times mr-2"></i>Annuler
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
