@@ -16,7 +16,22 @@
     </script>
 </head>
 <body class="bg-gray-50">
-    <div class="min-h-screen">
+    <div class="navbar bg-primary text-primary-content">
+        <div class="flex-1">
+            <a href="/" class="btn btn-ghost normal-case text-xl">
+                <i class="fas fa-home mr-2"></i>
+                Tableau de bord
+            </a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="/patients"><i class="fas fa-users mr-2"></i>Patients</a></li>
+                <li><a href="/consultations"><i class="fas fa-calendar-check mr-2"></i>Consultations</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="min-h-screen p-4">
         {% block content %}{% endblock %}
     </div>
 </body>
