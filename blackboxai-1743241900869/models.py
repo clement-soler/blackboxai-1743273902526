@@ -35,6 +35,7 @@ class Invoice(db.Model):
     amount = db.Column(db.Float, nullable=False)
     tax_rate = db.Column(db.Float, default=0.0)
     status = db.Column(db.String(20), default='pending')  # pending/paid/cancelled
+    payment_type = db.Column(db.String(20))  # CB/Cheque/Especes/Other
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class MedicalHistory(db.Model):
