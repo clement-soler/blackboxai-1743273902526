@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -10,9 +11,20 @@ app.config['SECRET_KEY'] = 'your-secret-key-here'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from models import Patient, Consultation
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    patients = Patient.query.count()
+    consultations = Consultation.query.count()
+    recent_patients = Patient.query.order_by(Patient.created_at.desc()).limit(5).all()
+    upcoming_consultations = Consultation.query.filter(Consultation.date >= datetime.now()).order_by(Consultation.date).limit(5).all()
+    
+    return render_template('index.html', 
+                         patients_count=patients,
+                         consultations_count=consultations,
+                         recent_patients=recent_patients,
+                         upcoming_consultations=upcoming_consultations)
 
 # Import routes after db initialization to avoid circular imports
 from routes.patients import patients_bp
