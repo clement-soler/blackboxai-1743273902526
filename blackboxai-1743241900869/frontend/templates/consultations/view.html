@@ -12,7 +12,8 @@
                 Modifier
             </a>
             {% if not consultation.invoices %}
-            <a href="/consultations/{{ consultation.id }}/invoice" class="btn btn-primary">
+            <form action="/invoices/consultation/{{ consultation.id }}" method="POST" class="inline">
+                <button type="submit" class="btn btn-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                 </svg>
@@ -66,12 +67,12 @@
                             <div class="text-sm text-gray-500">Tarif</div>
                             <div class="font-bold">{{ consultation.price }} €</div>
                         </div>
-                        {% if consultation.invoices %}
+                        {% if consultation.invoice %}
                         <div>
                             <div class="text-sm text-gray-500">Facture</div>
                             <div>
-                                <a href="/invoices/{{ consultation.invoices[0].id }}" class="link link-primary">
-                                    {{ consultation.invoices[0].number }}
+                                <a href="/invoices/{{ consultation.invoice.id }}" class="link link-primary">
+                                    {{ consultation.invoice.number }}
                                 </a>
                             </div>
                         </div>
