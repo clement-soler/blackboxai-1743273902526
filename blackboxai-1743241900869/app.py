@@ -11,18 +11,22 @@ app.config['SECRET_KEY'] = 'your-secret-key-here'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from models import Patient, Consultation
+from models import Patient, Consultation, Invoice
 
 @app.route('/')
 def index():
     patients = Patient.query.count()
     consultations = Consultation.query.count()
+    total_invoices = Invoice.query.count()
+    paid_invoices = Invoice.query.filter_by(status='paid').count()
     recent_patients = Patient.query.order_by(Patient.created_at.desc()).limit(5).all()
     upcoming_consultations = Consultation.query.filter(Consultation.date >= datetime.now()).order_by(Consultation.date).limit(5).all()
     
     return render_template('index.html', 
                          patients_count=patients,
                          consultations_count=consultations,
+                         total_invoices=total_invoices,
+                         paid_invoices=paid_invoices,
                          recent_patients=recent_patients,
                          upcoming_consultations=upcoming_consultations)
 
