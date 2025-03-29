@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Consultation du {{ consultation.date.strftime('%d/%m/%Y') }}</h1>
+        <div class="flex gap-2">
+            <a href="/consultations/{{ consultation.id }}/edit" class="btn btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+                Modifier
+            </a>
+            {% if not consultation.invoices %}
+            <a href="/consultations/{{ consultation.id }}/invoice" class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                </svg>
+                Créer facture
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card bg-base-100 shadow">
+        <div class="card-body">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Informations patient -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-4">Patient</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-sm text-gray-500">Nom</div>
+                            <div class="font-medium">
+                                <a href="/patients/{{ consultation.patient.id }}" class="link link-primary">
+                                    {{ consultation.patient.first_name }} {{ consultation.patient.last_name }}
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Date de naissance</div>
+                            <div>
+                                {{ consultation.patient.birth_date.strftime('%d/%m/%Y') if consultation.patient.birth_date else 'Non renseignée' }}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Téléphone</div>
+                            <div>{{ consultation.patient.phone or 'Non renseigné' }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Détails consultation -->
+                <div>
+                    <h2 class="text-xl font-semibold mb-4">Détails</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-sm text-gray-500">Date et heure</div>
+                            <div>{{ consultation.date.strftime('%d/%m/%Y à %H:%M') }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Motif</div>
+                            <div>{{ consultation.reason or 'Non renseigné' }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-500">Tarif</div>
+                            <div class="font-bold">{{ consultation.price }} €</div>
+                        </div>
+                        {% if consultation.invoices %}
+                        <div>
+                            <div class="text-sm text-gray-500">Facture</div>
+                            <div>
+                                <a href="/invoices/{{ consultation.invoices[0].id }}" class="link link-primary">
+                                    {{ consultation.invoices[0].number }}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="mt-6">
+                <h2 class="text-xl font-semibold mb-4">Notes</h2>
+                <div class="prose max-w-none">
+                    {{ consultation.notes or 'Aucune note pour cette consultation' }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
