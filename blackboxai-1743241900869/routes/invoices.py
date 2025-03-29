@@ -12,7 +12,9 @@ def list_invoices():
 
 @invoices_bp.route('/<int:invoice_id>', methods=['GET'])
 def view_invoice(invoice_id):
-    invoice = Invoice.query.get_or_404(invoice_id)
+    invoice = Invoice.query.options(
+        db.joinedload(Invoice.consultation).joinedload(Consultation.patient)
+    ).get_or_404(invoice_id)
     return render_template('invoices/view.html', invoice=invoice)
 
 @invoices_bp.route('/<int:invoice_id>/download', methods=['GET'])
@@ -21,7 +23,7 @@ def download_invoice(invoice_id):
     # In a real implementation, this would generate and return a PDF
     return jsonify({'message': 'PDF generation would happen here'})
 
-@invoices_bp.route('/consultation/<int:consultation_id>', methods=['POST'])
+@invoices_bp.route('/consultation/<int:consultation_id>', methods=['GET', 'POST'])
 def create_invoice(consultation_id):
     consultation = Consultation.query.get_or_404(consultation_id)
     
