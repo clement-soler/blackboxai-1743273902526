@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Gestion des patients</h1>
+        <a href="/patients/new" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Nouveau patient
+        </a>
+    </div>
+
+    <div class="card bg-base-100 shadow">
+        <div class="card-body">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="form-control flex-1">
+                    <input type="text" placeholder="Rechercher un patient..." class="input input-bordered w-full" id="search-input">
+                </div>
+                <div class="form-control">
+                    <select class="select select-bordered">
+                        <option disabled selected>Trier par</option>
+                        <option>Nom (A-Z)</option>
+                        <option>Nom (Z-A)</option>
+                        <option>Récent</option>
+                        <option>Ancien</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Téléphone</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patients-table">
+                        <tr>
+                            <td colspan="5" class="text-center">Aucun patient enregistré</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex justify-center mt-4">
+                <div class="join">
+                    <button class="join-item btn btn-disabled">«</button>
+                    <button class="join-item btn btn-active">1</button>
+                    <button class="join-item btn">2</button>
+                    <button class="join-item btn">3</button>
+                    <button class="join-item btn">»</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function() {
+        // Implémenter la recherche en temps réel
+        console.log('Recherche:', this.value);
+    });
+});
+</script>
+{% endblock %}
