@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">
+        {% if patient %}Modifier{% else %}Nouveau{% endif %} patient
+    </h1>
+
+    <div class="card bg-base-100 shadow">
+        <div class="card-body">
+            <form method="POST" action="{% if patient %}/patients/{{ patient.id }}{% else %}/patients{% endif %}">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Nom -->
+                    <div class="form-control">
+                        <label class="label" for="last_name">
+                            <span class="label-text">Nom*</span>
+                        </label>
+                        <input type="text" id="last_name" name="last_name" 
+                               class="input input-bordered" required
+                               value="{{ patient.last_name if patient }}">
+                    </div>
+
+                    <!-- Prénom -->
+                    <div class="form-control">
+                        <label class="label" for="first_name">
+                            <span class="label-text">Prénom*</span>
+                        </label>
+                        <input type="text" id="first_name" name="first_name" 
+                               class="input input-bordered" required
+                               value="{{ patient.first_name if patient }}">
+                    </div>
+
+                    <!-- Date de naissance -->
+                    <div class="form-control">
+                        <label class="label" for="birth_date">
+                            <span class="label-text">Date de naissance</span>
+                        </label>
+                        <input type="date" id="birth_date" name="birth_date" 
+                               class="input input-bordered"
+                               value="{{ patient.birth_date.strftime('%Y-%m-%d') if patient and patient.birth_date }}">
+                    </div>
+
+                    <!-- Téléphone -->
+                    <div class="form-control">
+                        <label class="label" for="phone">
+                            <span class="label-text">Téléphone</span>
+                        </label>
+                        <input type="tel" id="phone" name="phone" 
+                               class="input input-bordered"
+                               value="{{ patient.phone if patient }}">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-control md:col-span-2">
+                        <label class="label" for="email">
+                            <span class="label-text">Email</span>
+                        </label>
+                        <input type="email" id="email" name="email" 
+                               class="input input-bordered"
+                               value="{{ patient.email if patient }}">
+                    </div>
+
+                    <!-- Adresse -->
+                    <div class="form-control md:col-span-2">
+                        <label class="label" for="address">
+                            <span class="label-text">Adresse</span>
+                        </label>
+                        <textarea id="address" name="address" 
+                                  class="textarea textarea-bordered h-24">{{ patient.address if patient }}</textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 mt-6">
+                    <a href="/patients" class="btn btn-ghost">Annuler</a>
+                    <button type="submit" class="btn btn-primary">
+                        {% if patient %}Mettre à jour{% else %}Enregistrer{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
