@@ -15,6 +15,11 @@
                         <label class="label" for="patient_id">
                             <span class="label-text">Patient*</span>
                         </label>
+                        {% if from_patient %}
+                        <input type="hidden" name="patient_id" value="{{ patients[0].id }}">
+                        <input type="text" class="input input-bordered" 
+                               value="{{ patients[0].first_name }} {{ patients[0].last_name }}" disabled>
+                        {% else %}
                         <select id="patient_id" name="patient_id" class="select select-bordered" required>
                             <option disabled {% if not consultation %}selected{% endif %}>Sélectionner un patient</option>
                             {% for patient in patients %}
@@ -24,6 +29,7 @@
                             </option>
                             {% endfor %}
                         </select>
+                        {% endif %}
                     </div>
 
                     <!-- Date et heure -->
