@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 from models import Patient, db
 from datetime import datetime
 
@@ -13,6 +13,11 @@ def list_patients():
 def view_patient(patient_id):
     patient = Patient.query.get_or_404(patient_id)
     return render_template('patients/view.html', patient=patient)
+
+@patients_bp.route('/<int:patient_id>/edit', methods=['GET'])
+def edit_patient_form(patient_id):
+    patient = Patient.query.get_or_404(patient_id)
+    return render_template('patients/form.html', patient=patient)
 
 @patients_bp.route('/new', methods=['GET'])
 def new_patient_form():
@@ -34,9 +39,9 @@ def create_patient():
     
     db.session.add(patient)
     db.session.commit()
-    return jsonify({'message': 'Patient created successfully', 'id': patient.id}), 201
+    return redirect(url_for('patients.list_patients'))
 
-@patients_bp.route('/<int:patient_id>', methods=['PUT'])
+@patients_bp.route('/<int:patient_id>', methods=['PUT', 'POST'])
 def update_patient(patient_id):
     patient = Patient.query.get_or_404(patient_id)
     data = request.form
@@ -50,7 +55,7 @@ def update_patient(patient_id):
     patient.address = data['address']
     
     db.session.commit()
-    return jsonify({'message': 'Patient updated successfully'})
+    return redirect(url_for('patients.view_patient', patient_id=patient.id))
 
 @patients_bp.route('/<int:patient_id>', methods=['DELETE'])
 def delete_patient(patient_id):
