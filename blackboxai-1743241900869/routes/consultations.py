@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 from models import Consultation, Patient, db
 from datetime import datetime
 
@@ -20,12 +20,39 @@ def view_consultation(consultation_id):
     ).get_or_404(consultation_id)
     return render_template('consultations/view.html', consultation=consultation)
 
+@consultations_bp.route('/<int:consultation_id>/edit', methods=['GET', 'POST'])
+def edit_consultation(consultation_id):
+    consultation = Consultation.query.get_or_404(consultation_id)
+    patients = Patient.query.all()
+    
+    if request.method == 'POST':
+        consultation.date = datetime.strptime(request.form['date'], '%Y-%m-%dT%H:%M')
+        consultation.reason = request.form['reason']
+        consultation.price = float(request.form['price'])
+        consultation.patient_id = int(request.form['patient_id'])
+        consultation.notes = request.form.get('notes', '')
+        
+        db.session.commit()
+        return redirect(url_for('consultations.view_consultation', consultation_id=consultation.id))
+    
+    return render_template('consultations/edit.html', 
+                         consultation=consultation,
+                         patients=patients)
+
 @consultations_bp.route('/new', methods=['GET'])
 def new_consultation_form():
     patients = Patient.query.order_by(Patient.last_name).all()
     return render_template('consultations/form.html', 
                          patients=patients,
                          now=datetime.now())
+
+@consultations_bp.route('/patient/<int:patient_id>/new', methods=['GET'])
+def new_patient_consultation_form(patient_id):
+    patient = Patient.query.get_or_404(patient_id)
+    return render_template('consultations/form.html',
+                         patients=[patient],
+                         now=datetime.now(),
+                         from_patient=True)
 
 @consultations_bp.route('', methods=['POST'])
 def create_consultation():
