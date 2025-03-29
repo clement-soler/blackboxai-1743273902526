@@ -21,6 +21,16 @@
             <!-- Informations client -->
             <div class="grid grid-cols-2 gap-8 mb-8 p-4 bg-gray-50 rounded-lg">
                 <div>
+                    <h3 class="font-semibold text-lg mb-2">Méthode de paiement :</h3>
+                    <p class="font-medium">
+                        {% if invoice.payment_type == 'CB' %}Carte Bancaire
+                        {% elif invoice.payment_type == 'Cheque' %}Chèque
+                        {% elif invoice.payment_type == 'Especes' %}Espèces
+                        {% else %}Autre
+                        {% endif %}
+                    </p>
+                </div>
+                <div>
                     <h3 class="font-semibold text-lg mb-2">À l'attention de :</h3>
                     <p class="font-medium">{{ invoice.consultation.patient.last_name }} {{ invoice.consultation.patient.first_name }}</p>
                     <p>{{ invoice.consultation.patient.address }}</p>
